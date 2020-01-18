@@ -1,0 +1,13 @@
+target/
+test-output/
+.settings/
+.project
+*.log
+.classpath
+.DS*
+*.iml
+.idea/
+out/
+.factorypath
+bin/
+

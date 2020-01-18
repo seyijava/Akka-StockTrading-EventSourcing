@@ -1,0 +1,18 @@
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <file>target/mqtt-streaming2.log</file>
+        <append>false</append>
+        <encoder>
+            <pattern>%d{ISO8601} %-5level [%thread] [%logger{36}]  %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="akka" level="info" />
+    <logger name="akka.stream" level="info" />
+    <logger name="akka.stream.alpakka" level="info" />
+    <logger name="akka.stream.alpakka.mqtt.streaming.impl" level="info" />
+
+    <root level="info">
+        <appender-ref ref="Console" />
+    </root>
+</configuration>
