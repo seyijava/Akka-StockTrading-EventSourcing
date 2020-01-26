@@ -3,7 +3,7 @@ package com.bigdataconcept.akka.stock.trade.order
 import akka.actor.{ActorRef, ActorSystem}
 import com.typesafe.config.ConfigFactory
 import com.bigdataconcept.akka.stock.trade.order.actor.OrderShardingManager.setupClusterSharding
-import com.bigdataconcept.akka.stock.trade.order.actor.TradeServiceActor
+import com.bigdataconcept.akka.stock.trade.order.actor.{TradeOrderHandlerActor, TradeServiceActor}
 import com.bigdataconcept.akka.stock.trade.order.api.{HttpServerRoutes, TradeOrderRoutes}
 import com.bigdataconcept.akka.stock.trade.order.kafka.{KafkaPublisherActor, TradeOrderPubSubActor}
 
@@ -23,7 +23,7 @@ object TradeOrderMainService{
   val inboundTradeOrderTopicGroupId = config.getString("kafka.inboundTradeOrderTopicGroupId")
   val messagePublisherActor = actorSystem.actorOf(KafkaPublisherActor.props(outboundTradeOrderTopic), name = "kafkaPublisherActor")
   val tradeOrderShardRegion = setupClusterSharding(actorSystem,messagePublisherActor)
-  actorSystem.actorOf(TradeServiceActor.props(tradeOrderShardRegion), name = "TradeServiceActor")
+  val tradeOrderHandlerActor = actorSystem.actorOf(TradeOrderHandlerActor.props(tradeOrderShardRegion))
   actorSystem.actorOf(TradeOrderPubSubActor.props(inboundTradeOrderTopic, inboundTradeOrderTopicGroupId,tradeOrderShardRegion), "TradeOrderPubSubActor")
   val httpPort = config.getInt("rest.port")
   val ippAddress = config.getString("rest.host")

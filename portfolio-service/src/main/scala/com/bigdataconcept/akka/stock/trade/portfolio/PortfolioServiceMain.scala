@@ -6,8 +6,7 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.bigdataconcept.akka.stock.trade.portfolio.actor.PortfolioShardingManager.setupClusterSharding
 import com.bigdataconcept.akka.stock.trade.portfolio.api.{HttpServerRoutes, PortfolioServiceRouteAPI}
-import com.bigdataconcept.akka.stock.trade.portfolio.kafka.TradeOrderPubSubActor
-import com.bigdataconcept.akka.stock.trade.portfolio.kafka.KafkaPublisher
+import com.bigdataconcept.akka.stock.trade.portfolio.kafka.{AccountEventSubscriberActor, KafkaPublisher, TradeOrderPubSubActor}
 
 
 /**
@@ -27,9 +26,19 @@ object PortfolioServiceMain {
     val inboundTradeOrderTopic = config.getString("kafka.inboundTradeOrderTopic")
     val outboundTradeOrderTopic = config.getString("kafka.outboundTradeOrderTopic")
     val inboundTradeOrderTopicGroupId = config.getString("kafka.inboundTradeOrderTopicGroupId")
-    val portfolioKafkaProducer = actorSystem.actorOf(KafkaPublisher.prop(outboundTradeOrderTopic))
-    val portfolioShardingRegion = setupClusterSharding(actorSystem, portfolioKafkaProducer)
+
+    val outboundAccountTopic = config.getString("kafka.outboundAccountTopic")
+
+
+    val inboundAccountTopic = config.getString("kafka.inboundAccountTopic")
+    val inboundAccountTopicGroupId = config.getString("kafka.inboundAccountTopicGroupId")
+
+    val tradeOrderEventPublisher = actorSystem.actorOf(KafkaPublisher.prop(outboundTradeOrderTopic))
+    val accountEventPublisher = actorSystem.actorOf(KafkaPublisher.prop(outboundAccountTopic))
+
+    val portfolioShardingRegion = setupClusterSharding(actorSystem, tradeOrderEventPublisher, accountEventPublisher)
     val tradeOrderPubSubActor =  actorSystem.actorOf(TradeOrderPubSubActor.prop(inboundTradeOrderTopic,inboundTradeOrderTopicGroupId,portfolioShardingRegion),"TradeOrderPubSubActor")
+    val accountPubSubActor = actorSystem.actorOf(AccountEventSubscriberActor.props(inboundAccountTopic, inboundAccountTopicGroupId,portfolioShardingRegion), name = "AccountSubActor")
     val httpPort = config.getInt("rest.port")
     val ippAddress = config.getString("rest.host")
     startHttpServer(portfolioShardingRegion,httpPort,ippAddress)

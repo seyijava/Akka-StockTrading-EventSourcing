@@ -9,7 +9,7 @@ class AccountJsonSupport extends  SprayJsonSupport{
    import DefaultJsonProtocol._
    implicit val contact = jsonFormat2(Contact)
    implicit val address = jsonFormat3(Address)
-   implicit val profile = jsonFormat4(Profile)
+   implicit val profile = jsonFormat2(Profile)
    implicit val openAccountRequest = jsonFormat5(OpenAccountRequest)
    implicit val depositRequest = jsonFormat2(DepositRequest)
    implicit val withdrawalRequest = jsonFormat2(WithdrawalRequest)

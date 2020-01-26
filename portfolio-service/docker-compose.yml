@@ -10,16 +10,18 @@ services:
       - cluster-network
     image: akka-stock-trading-system/portfolio-service
     ports:
-      - '2553:2553'
-      - '9000:9000'
+      - '2552:2552'
+      - '7000:7000'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: seed
       CLUSTER_SEED_IP: seed
+      CLUSTER_PORT: 2552
+      CLUSTER_SEED_PORT: 2552
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
-      SERVER_PORT: 9000
+      SERVER_PORT: 7000
 
 
   node1:
@@ -27,33 +29,54 @@ services:
       - cluster-network
     image: akka-stock-trading-system/portfolio-service
     ports:
-      - '9001:9000'    
+      - '7001:7000' 
+      - '1500:1500'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node1
-      CLUSTER_PORT: 1600
+      CLUSTER_PORT: 1500
       CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2553
+      CLUSTER_SEED_PORT: 2552
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
-      SERVER_PORT: 9000
+      SERVER_PORT: 7000
 
   node2:
     networks:
       - cluster-network
     image: akka-stock-trading-system/portfolio-service
     ports:
-      - '9002:9000'
+      - '7002:7000'
+      - '1501:1501'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node2
-      CLUSTER_PORT: 1600
+      CLUSTER_PORT: 1501
       CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2553
+      CLUSTER_SEED_PORT: 2552
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
-      SERVER_PORT: 9000
+      SERVER_PORT: 7000
+
+  node3:
+    networks:
+      - cluster-network
+    image: akka-stock-trading-system/portfolio-service
+    ports:
+      - '7003:7000'
+      - '1502:1502'
+    environment:
+      SERVER_IP: 0.0.0.0
+      CLUSTER_IP: node3
+      CLUSTER_PORT: 1502
+      CLUSTER_SEED_IP: seed
+      CLUSTER_SEED_PORT: 2552
+      CASSANDRA_IP: 192.168.2.45
+      CASSANDRA_PORT: 9042
+      KAFKA_SERVER: 192.168.2.45:9092
+      SERVER_PORT: 7000
+
 
  

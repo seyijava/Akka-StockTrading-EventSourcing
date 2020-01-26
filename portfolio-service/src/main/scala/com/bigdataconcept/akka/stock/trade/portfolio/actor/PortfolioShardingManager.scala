@@ -22,11 +22,11 @@ object PortfolioShardingManager {
    * @param messagePublisherActor
    * @return
    */
-  def setupClusterSharding(system: ActorSystem, messagePublisherActor: ActorRef): ActorRef = {
+  def setupClusterSharding(system: ActorSystem, tradeOrderEventPublisher: ActorRef, accountEventPublisher: ActorRef): ActorRef = {
     val settings = ClusterShardingSettings.create(system)
     ClusterSharding(system).start(
       typeName = "PortfolioSharding",
-      entityProps = PortfolioEntityActor.props(messagePublisherActor),
+      entityProps = PortfolioEntityActor.props(tradeOrderEventPublisher, accountEventPublisher),
       settings = settings,
       extractEntityId = extractEntityId,
       extractShardId = extractShardId)

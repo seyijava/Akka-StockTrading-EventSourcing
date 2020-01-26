@@ -10,16 +10,18 @@ services:
       - cluster-network
     image: akka-stock-trading-system/trade-order-service
     ports:
-      - '2553:2553'
-      - '7000:7000'
+      - '2551:2551'
+      - '6000:6000'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: seed
       CLUSTER_SEED_IP: seed
+      CLUSTER_PORT: 2551
+      CLUSTER_SEED_PORT: 2551
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
-      SERVER_PORT: 7000
+      SERVER_PORT: 6000
 
 
   node1:
@@ -27,33 +29,54 @@ services:
       - cluster-network
     image: akka-stock-trading-system/trade-order-service
     ports:
-      - '7001:7000'    
+      - '6001:6000' 
+      - '1700:1700'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node1
-      CLUSTER_PORT: 1600
+      CLUSTER_PORT: 1500
       CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2553
+      CLUSTER_SEED_PORT: 2551
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
-      SERVER_PORT: 7000
+      SERVER_PORT: 6000
 
   node2:
     networks:
       - cluster-network
     image: akka-stock-trading-system/trade-order-service
     ports:
-      - '7002:7000'
+      - '6002:6000'
+      - '1701:1701'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node2
-      CLUSTER_PORT: 1600
+      CLUSTER_PORT: 1701
       CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2553
+      CLUSTER_SEED_PORT: 2551
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
-      SERVER_PORT: 7000
+      SERVER_PORT: 6000
+
+  node3:
+    networks:
+      - cluster-network
+    image: akka-stock-trading-system/trade-order-service
+    ports:
+      - '6003:6000'
+      - '1702:1702'
+    environment:
+      SERVER_IP: 0.0.0.0
+      CLUSTER_IP: node3
+      CLUSTER_PORT: 1702
+      CLUSTER_SEED_IP: seed
+      CLUSTER_SEED_PORT: 2551
+      CASSANDRA_IP: 192.168.2.45
+      CASSANDRA_PORT: 9042
+      KAFKA_SERVER: 192.168.2.45:9092
+      SERVER_PORT: 6000
+
 
  

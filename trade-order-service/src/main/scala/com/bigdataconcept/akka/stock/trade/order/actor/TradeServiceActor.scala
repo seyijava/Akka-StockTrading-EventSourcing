@@ -25,7 +25,6 @@ object TradeServiceActor{
 }
 class TradeServiceActor(tradeOrderShardRegion: ActorRef) extends Actor with ActorLogging {
 
-   context.system.eventStream.subscribe(self, classOf[Order])
 
   implicit val ec: ExecutionContext = context.dispatcher
 
@@ -49,6 +48,7 @@ class TradeServiceActor(tradeOrderShardRegion: ActorRef) extends Actor with Acto
          val completeOrderCommand = new CompleteOrderCommand(orderFulfilled.orderId, orderResponse)
          log.info("Sending Order complete to TraderOrderEntity  order Id {}  {}", completeOrderCommand.orderId,completeOrderCommand)
          tradeOrderShardRegion.forward(completeOrderCommand)
+         context.stop(this.self)
        }
 
 

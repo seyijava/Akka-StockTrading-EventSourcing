@@ -1,5 +1,4 @@
-
-
+name := "portfolio-service"
 scalaVersion := "2.12.8"
 lazy val akkaVersion = "2.6.0"
 lazy val akkaHttpVersion = "10.1.5"
@@ -30,17 +29,14 @@ libraryDependencies ++= Seq(
   "com.datastax.cassandra" % "cassandra-driver-extras" % "3.1.4",
   "com.google.code.gson" % "gson" % "2.8.5",
   "org.pcollections" % "pcollections" % "2.1.2",
-   "com.hazelcast" % "hazelcast" % "3.12.2",
-"com.typesafe.akka" %% "akka-remote" % akkaVersion)
+  "com.hazelcast" % "hazelcast" % "3.12.2",
+  "com.typesafe.akka" %% "akka-remote" % akkaVersion)
 
 version in Docker := "latest"
-dockerExposedPorts in Docker := Seq(1603)
-dockerRepository := Some("portfolio-service-cluster")
+dockerExposedPorts in Docker := Seq(7000)
+dockerRepository := Some("akka-stock-trading-system")
 dockerBaseImage := "java"
 enablePlugins(JavaAppPackaging)
-enablePlugins(DockerPlugin)
-enablePlugins(AshScriptPlugin)
-
 
 
 

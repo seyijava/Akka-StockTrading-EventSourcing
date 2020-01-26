@@ -16,6 +16,8 @@ services:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: seed
       CLUSTER_SEED_IP: seed
+      CLUSTER_PORT: 2553
+      CLUSTER_SEED_PORT: 2553
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
@@ -27,7 +29,8 @@ services:
       - cluster-network
     image: akka-stock-trading-system/account-service
     ports:
-      - '8001:8000'    
+      - '8001:8000' 
+      - '1600:1600'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node1
@@ -45,15 +48,35 @@ services:
     image: akka-stock-trading-system/account-service
     ports:
       - '8002:8000'
+      - '1601:1601'
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node2
-      CLUSTER_PORT: 1600
+      CLUSTER_PORT: 1601
       CLUSTER_SEED_IP: seed
       CLUSTER_SEED_PORT: 2553
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
       SERVER_PORT: 8000
+
+  node3:
+    networks:
+      - cluster-network
+    image: akka-stock-trading-system/account-service
+    ports:
+      - '8003:8000'
+      - '1602:1602'
+    environment:
+      SERVER_IP: 0.0.0.0
+      CLUSTER_IP: node3
+      CLUSTER_PORT: 1602
+      CLUSTER_SEED_IP: seed
+      CLUSTER_SEED_PORT: 2553
+      CASSANDRA_IP: 192.168.2.45
+      CASSANDRA_PORT: 9042
+      KAFKA_SERVER: 192.168.2.45:9092
+      SERVER_PORT: 8000
+
 
  

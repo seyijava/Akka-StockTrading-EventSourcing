@@ -19,13 +19,7 @@ import com.bigdataconcept.akka.stock.trade.portfolio.domain.Domain.OrderDetails
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.Domain.OrderType
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.Domain.Market
 import spray.json
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.OpenPortfolioRequest
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.OpenPortfolioResponse
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.RefundRequest
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.DepositRequest
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.WithdrawalRequest
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.PlaceOrderRequest
-import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.PortfolioViewResponse
+import com.bigdataconcept.akka.stock.trade.portfolio.domain.ApiPayload.{DepositRequest, OpenPortfolioRequest, OpenPortfolioResponse, PlaceBuyOrderRequest, PlaceSellOrderRequest, PortfolioViewResponse, RefundRequest, WithdrawalRequest}
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.Commands.CommandResponse
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.Commands.PortfolioView
 
@@ -54,8 +48,9 @@ class PortfolioJsonSupport extends SprayJsonSupport {
    implicit  val refundRequest = jsonFormat2(RefundRequest)
    implicit  val withdrawalRequest = jsonFormat2(WithdrawalRequest)
    implicit  val depositRequest = jsonFormat2(DepositRequest)
-   implicit  val placeOrderRequest = jsonFormat4(PlaceOrderRequest)
+   implicit  val placeBuyOrderRequest = jsonFormat3(PlaceBuyOrderRequest)
    implicit val  portfolioViewResponse = jsonFormat1(PortfolioViewResponse)
+   implicit val  placeSellOrderRequest = jsonFormat4(PlaceSellOrderRequest)
 
 
    implicit  val limit = jsonFormat1(Limit)
@@ -65,8 +60,5 @@ class PortfolioJsonSupport extends SprayJsonSupport {
 //   implicit  val orderDetails = jsonFormat4(OrderDetails)
 
    implicit val closePortfolioCommand = jsonFormat1(ClosePortfolioCommand)
-   implicit val receiveFundCommand = jsonFormat3(ReceiveFundsCommand)
-   implicit val sendFundsCommand = jsonFormat3(SendFundsCommand)
-   implicit val acceptRefundCommand = jsonFormat3(AcceptRefundCommand)
 
 }

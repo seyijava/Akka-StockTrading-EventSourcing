@@ -1,3 +1,4 @@
+name := "account-service"
 scalaVersion := "2.12.8"
 lazy val akkaVersion = "2.6.0"
 lazy val akkaHttpVersion = "10.1.5"
@@ -32,12 +33,10 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-remote" % akkaVersion)
 
 version in Docker := "latest"
-dockerExposedPorts in Docker := Seq(1603)
-dockerRepository := Some("portfolio-service-cluster")
+dockerExposedPorts in Docker := Seq(8000)
+dockerRepository := Some("akka-stock-trading-system")
 dockerBaseImage := "java"
 enablePlugins(JavaAppPackaging)
-enablePlugins(DockerPlugin)
-enablePlugins(AshScriptPlugin)
 
 
 

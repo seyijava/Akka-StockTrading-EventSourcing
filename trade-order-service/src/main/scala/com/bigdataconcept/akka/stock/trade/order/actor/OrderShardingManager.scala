@@ -55,8 +55,10 @@ object OrderShardingManager {
    */
   def setupClusterSharding(system: ActorSystem,messagePublisherActor:ActorRef): ActorRef = {
     val settings = ClusterShardingSettings.create(system)
+
     ClusterSharding(system).start(
       typeName = "TradeOrderSharding",
+
       entityProps = OrderActorEntity.props(messagePublisherActor),
       settings = settings,
       extractEntityId = extractEntityId,

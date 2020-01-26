@@ -5,7 +5,7 @@ import akka.actor.ActorSystem
 import akka.cluster.sharding.ShardRegion
 import akka.cluster.sharding.ClusterShardingSettings
 import akka.cluster.sharding.ClusterSharding
-import com.bigdataconcept.akka.stock.trade.account.domain.Commands.{AccountCommand, AddFundCommand, OpenAccountCommand, UpdateAddressCommand, UpdateContactInfoCommand, WithdrawalFundCommand}
+import com.bigdataconcept.akka.stock.trade.account.domain.Commands.{AccountCommand, AddFundCommand, CreditAccountCommand, DebitAccountCommand, GetAccountDetailCommand, GetBalanceCommand, OpenAccountCommand, UpdateAddressCommand, UpdateContactInfoCommand, WithdrawalFundCommand}
 
 
 object AccountShardingManager {
@@ -33,6 +33,18 @@ object AccountShardingManager {
     }
     if(command.isInstanceOf[UpdateAddressCommand]){
       return command.asInstanceOf[UpdateAddressCommand].accountId.hashCode() % numberOfShards + ""
+    }
+    if(command.isInstanceOf[GetBalanceCommand]){
+      return command.asInstanceOf[GetBalanceCommand].accountId.hashCode() % numberOfShards + ""
+    }
+    if(command.isInstanceOf[GetAccountDetailCommand]){
+       return command.asInstanceOf[GetAccountDetailCommand].accountId.hashCode() % numberOfShards + ""
+    }
+    if(command.isInstanceOf[CreditAccountCommand]){
+       return command.asInstanceOf[CreditAccountCommand].accountId.hashCode() % numberOfShards + ""
+    }
+    if(command.isInstanceOf[DebitAccountCommand]){
+      return command.asInstanceOf[DebitAccountCommand].accountId.hashCode() % numberOfShards + ""
     }
     return null
   }

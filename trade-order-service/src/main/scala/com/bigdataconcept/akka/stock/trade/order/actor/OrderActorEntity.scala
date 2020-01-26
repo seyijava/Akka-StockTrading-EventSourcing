@@ -19,13 +19,19 @@ import com.google.gson.Gson
  *         service via the Kafka event bus. It subscribe to place order topic in kafka
  *         and forward the Place order command to Order ShardRegion Proxy for processing
  * */
- *
+
 object OrderActorEntity{
 
    def props(messagePublisherActor: ActorRef) : Props = Props(new OrderActorEntity(messagePublisherActor))
 }
 
 class  OrderActorEntity(messagePublisherActor: ActorRef)  extends PersistentActor  with ActorLogging{
+
+  var orderState = new OrderState()
+  val ORDER_COMPLETE_EVENT_TYPE = "COMPLETE"
+  val ORDER_FAILED_EVENT_TYPE = "FAILED"
+
+
   /**
    *
    * @return
@@ -49,10 +55,8 @@ class  OrderActorEntity(messagePublisherActor: ActorRef)  extends PersistentActo
   }
 
 
-  var orderState = new OrderState()
-  val ORDER_COMPLETE_EVENT_TYPE = "COMPLETE"
-  val ORDER_FAILED_EVENT_TYPE = "FAILED"
-  override def persistenceId: String = if (orderState.orderId == None ) self.path.name else orderState.orderId.get
+
+  override def persistenceId: String = self.path.name
 
   override def receiveRecover: Receive = {
 

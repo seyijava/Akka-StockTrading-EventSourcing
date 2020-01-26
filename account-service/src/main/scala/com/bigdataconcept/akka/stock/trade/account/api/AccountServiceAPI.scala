@@ -1,30 +1,29 @@
 package com.bigdataconcept.akka.stock.trade.account.api
 
 import java.util.Date
-
 import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{as, complete, concat, entity, get, onComplete, parameters, path, post}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import com.bigdataconcept.akka.stock.trade.account.domain.ApiPayload.{ChangeAddressRequest, ChangeContactRequest, CommandResponse, DepositRequest, OpenAccountRequest, WithdrawalRequest}
-import com.bigdataconcept.akka.stock.trade.account.domain.Commands.{AddFundCommand, GetBalanceCommand, OpenAccountCommand, UpdateAddressCommand, UpdateContactInfoCommand, WithdrawalFundCommand}
+import com.bigdataconcept.akka.stock.trade.account.domain.Commands.{AddFundCommand, GetAccountDetailCommand, GetBalanceCommand, OpenAccountCommand, UpdateAddressCommand, UpdateContactInfoCommand, WithdrawalFundCommand}
 import com.bigdataconcept.akka.stock.trade.account.util.EntityIdGenerator
 import akka.pattern.ask
 import scala.concurrent.duration._
 import scala.util.{Failure, Success}
-
+import com.bigdataconcept.akka.stock.trade.account.util.SequenceIDGenerator
 
 
 class AccountServiceAPI(accountShardingRegion: ActorRef)(implicit  actorSystem: ActorSystem) extends AccountJsonSupport {
 
-     implicit  val timeout:Timeout = Timeout(10 seconds)
+     implicit  val timeout:Timeout = Timeout(20 seconds)
 
 
      val accountRoutes : Route = {
        concat(
          post {
-           path("open") {
+           path("openAccount") {
              actorSystem.log.info("Open Account API")
              entity(as[OpenAccountRequest]) { openAccountRequest =>
                actorSystem.log.info("Open Account Request {}", openAccountRequest)
@@ -33,7 +32,7 @@ class AccountServiceAPI(accountShardingRegion: ActorRef)(implicit  actorSystem: 
                val profile = openAccountRequest.profile
                val name = openAccountRequest.name
                val amount = BigDecimal(openAccountRequest.openBalance)
-               val openAccountCmd = OpenAccountCommand(EntityIdGenerator.generatorEntityId(), name, profile, contact, address, amount, new Date())
+               val openAccountCmd = OpenAccountCommand("A-" + new SequenceIDGenerator().getId(), name, profile, contact, address, amount, new Date())
                onComplete((accountShardingRegion ? openAccountCmd).mapTo[CommandResponse]) {
                  case Success(r) => complete(r)
                  case Failure(ex) => complete(StatusCodes.BadRequest, ex.toString)
@@ -74,10 +73,10 @@ class AccountServiceAPI(accountShardingRegion: ActorRef)(implicit  actorSystem: 
          post {
            path(pm = "updateContactInfo") {
              actorSystem.log.info("Change Contact Info API")
-             entity(as[ChangeContactRequest]) { changeAddressRequest =>
-               actorSystem.log.info("Change Contact Request{}", changeAddressRequest)
-               val contact = changeAddressRequest.contact
-               val changeContactCmd = UpdateContactInfoCommand(changeAddressRequest.accountId, contact)
+             entity(as[ChangeContactRequest]) { changeContactInfoRequest =>
+               actorSystem.log.info("Change Contact Request{}", changeContactInfoRequest)
+               val contact = changeContactInfoRequest.contact
+               val changeContactCmd = UpdateContactInfoCommand(changeContactInfoRequest.accountId, contact)
                onComplete((accountShardingRegion ? changeContactCmd).mapTo[CommandResponse]) {
                  case Success(r) => complete(r)
                  case Failure(ex) => complete(StatusCodes.BadRequest, ex.toString)
@@ -101,10 +100,25 @@ class AccountServiceAPI(accountShardingRegion: ActorRef)(implicit  actorSystem: 
          },
          get {
            path("viewBalance") {
+             actorSystem.log.info("View Balance API")
              parameters("id") {
                (id) => {
                  val balanceCmd = GetBalanceCommand(id)
                  onComplete((accountShardingRegion ? balanceCmd).mapTo[CommandResponse]) {
+                   case Success(r) => complete(r)
+                   case Failure(ex) => complete(StatusCodes.BadRequest, ex.toString)
+                 }
+               }
+             }
+           }
+         },
+         get {
+           path("viewAcct") {
+             actorSystem.log.info("View Account Details API")
+             parameters("id") {
+               (id) => {
+                 val acctDetailsCmd = GetAccountDetailCommand(id)
+                 onComplete((accountShardingRegion ? acctDetailsCmd).mapTo[CommandResponse]) {
                    case Success(r) => complete(r)
                    case Failure(ex) => complete(StatusCodes.BadRequest, ex.toString)
                  }

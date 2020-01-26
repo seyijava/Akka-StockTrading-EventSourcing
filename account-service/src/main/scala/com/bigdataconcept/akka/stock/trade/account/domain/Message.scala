@@ -21,30 +21,43 @@ object Commands {
 
         case class GetBalanceCommand(accountId: String) extends  AccountCommand
 
+        case class GetAccountDetailCommand(accountId: String) extends AccountCommand
+
+        case class CreditAccountCommand(accountId: String , amount:BigDecimal) extends  AccountCommand
+
+        case class DebitAccountCommand(accountId: String, amount: BigDecimal) extends  AccountCommand
+
 
 
 }
 
 object Domain{
 
-       case class Address(street: String, postalCode: String, provide: String) extends  Serializable
+       case class Address(street: String, postalCode: String, province: String) extends  Serializable
        case class Contact(email: String, phoneNumber: String) extends  Serializable
-       case class Profile(name: String, surname: String, address: Address, contact: Contact) extends Serializable
+       case class Profile(name: String, surname: String) extends Serializable
+       case class AccountDetails(profile: Profile, contact: Contact,address: Address, balance: Double) extends Serializable
 }
 
 object Event{
 
-        trait AccountEvent extends  Serializable
+        trait AccountEvent
 
         case class OpenAccountEvent(accountId: String, portfolioId: String, name: String, profile: Profile, contact: Contact, address: Address, openingBalance: BigDecimal, openingDate: Date) extends AccountEvent
 
-        case class AddFundEvent(accountId: String, funds : BigDecimal) extends  AccountEvent
+        case class AddFundEvent(accountId: String, funds : Double) extends  AccountEvent
 
-        case class WithdrawalEvent(accountId: String, fund: BigDecimal) extends  AccountEvent
+        case class WithdrawalEvent(accountId: String, fund: Double) extends  AccountEvent
 
         case class  UpdateContactInfoEvent(accountId: String, contact: Contact) extends  AccountEvent
 
         case class  UpdateAddressEvent(accountId: String, address: Address) extends  AccountEvent
+
+        case class BalanceEvent(accountId: String) extends  AccountEvent
+
+        case class AccountCreditedEvent(accountId: String, amount : Double, transDate: Long) extends  AccountEvent
+
+         case class AccountDebitedEvent(accountId: String, amount : Double, transDate: Long) extends  AccountEvent
 
 
 }
@@ -57,6 +70,15 @@ object State{
 
 object KafkaProtocol{
   case class KafkaMessage(payload: String, msgType: String) extends Serializable
+  val DEPOSITEVENT = "DEPOSIT_FUNDS_EVENT"
+  val WITHDRAWEVENT= "WITHDRAWAL_EVENT"
+  val OPENPORTFOLIOEVENT = "OPENPORTFOLIO_EVENT"
+  val MSGTYPE = "EVENT_TYPE"
+
+  case class CreditAccountEvent(accountId: String, amount: Double) extends  Serializable
+
+  case class DebitAccountEvent(accountId: String, amount: Double) extends  Serializable
+
 }
 
 
@@ -72,7 +94,7 @@ object ApiPayload{
 }
 
 object KafkaEvent{
-      case class CreatePortfolioEvent(accountId: String, portfolio: String, name: String) extends  Serializable
+      case class CreatePortfolioEvent(accountId: String, portfolio: String, name: String, fund: Double) extends  Serializable
       case class DepositFundEvent(accountId: String ,portfolioId: String,  amount: Double) extends Serializable
       case class WithDrawFundEvent(accountId: String ,portfolioId: String,  amount: Double) extends  Serializable
 }

@@ -10,7 +10,6 @@ import scala.concurrent.duration._
 import scala.concurrent.Future
 import scala.concurrent.Await
 import akka.http.scaladsl.server.Directives._
-
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Route._
 import akka.http.scaladsl.server.RouteResult._
@@ -25,8 +24,6 @@ class HttpServerRoutes(route: Route, port: Int,host: String)(implicit system: Ac
   def start(): Unit = {
     System.out.println(port)
     val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(route, host, port)
-
-
 
   }
 
