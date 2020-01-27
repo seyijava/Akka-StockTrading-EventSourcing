@@ -1,13 +1,13 @@
 version: '3.5'
 
 networks:
-  cluster-network:
+  cluster-network-account:
 
 services:
    
   seed:
     networks:
-      - cluster-network
+      - cluster-network-account
     image: akka-stock-trading-system/account-service
     ports:
       - '2553:2553'
@@ -26,7 +26,7 @@ services:
 
   node1:
     networks:
-      - cluster-network
+      - cluster-network-account
     image: akka-stock-trading-system/account-service
     ports:
       - '8001:8000' 
@@ -44,7 +44,7 @@ services:
 
   node2:
     networks:
-      - cluster-network
+      - cluster-network-account
     image: akka-stock-trading-system/account-service
     ports:
       - '8002:8000'
@@ -62,7 +62,7 @@ services:
 
   node3:
     networks:
-      - cluster-network
+      - cluster-network-account
     image: akka-stock-trading-system/account-service
     ports:
       - '8003:8000'

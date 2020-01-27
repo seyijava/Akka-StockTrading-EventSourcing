@@ -1,23 +1,23 @@
 version: '3.5'
 
 networks:
-  cluster-network:
+  cluster-network-portfolio:
 
 services:
    
-  seed:
+  seed-portfolio:
     networks:
-      - cluster-network
+      - cluster-network-portfolio
     image: akka-stock-trading-system/portfolio-service
     ports:
-      - '2552:2552'
+      - '2554:2554'
       - '7000:7000'
     environment:
       SERVER_IP: 0.0.0.0
-      CLUSTER_IP: seed
-      CLUSTER_SEED_IP: seed
-      CLUSTER_PORT: 2552
-      CLUSTER_SEED_PORT: 2552
+      CLUSTER_IP: seed-portfolio
+      CLUSTER_SEED_IP: seed-portfolio
+      CLUSTER_PORT: 2554
+      CLUSTER_SEED_PORT: 2554
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
@@ -26,7 +26,7 @@ services:
 
   node1:
     networks:
-      - cluster-network
+      - cluster-network-portfolio
     image: akka-stock-trading-system/portfolio-service
     ports:
       - '7001:7000' 
@@ -35,8 +35,8 @@ services:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node1
       CLUSTER_PORT: 1500
-      CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2552
+      CLUSTER_SEED_IP: seed-portfolio
+      CLUSTER_SEED_PORT: 2554
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
@@ -44,7 +44,7 @@ services:
 
   node2:
     networks:
-      - cluster-network
+      - cluster-network-portfolio
     image: akka-stock-trading-system/portfolio-service
     ports:
       - '7002:7000'
@@ -53,8 +53,8 @@ services:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node2
       CLUSTER_PORT: 1501
-      CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2552
+      CLUSTER_SEED_IP: seed-portfolio
+      CLUSTER_SEED_PORT: 2554
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092
@@ -62,7 +62,7 @@ services:
 
   node3:
     networks:
-      - cluster-network
+      - cluster-network-portfolio
     image: akka-stock-trading-system/portfolio-service
     ports:
       - '7003:7000'
@@ -71,8 +71,8 @@ services:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node3
       CLUSTER_PORT: 1502
-      CLUSTER_SEED_IP: seed
-      CLUSTER_SEED_PORT: 2552
+      CLUSTER_SEED_IP: seed-portfolio
+      CLUSTER_SEED_PORT: 2554
       CASSANDRA_IP: 192.168.2.45
       CASSANDRA_PORT: 9042
       KAFKA_SERVER: 192.168.2.45:9092

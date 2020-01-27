@@ -1,13 +1,13 @@
 version: '3.5'
 
 networks:
-  cluster-network:
+  cluster-network-trade:
 
 services:
    
   seed:
     networks:
-      - cluster-network
+      - cluster-network-trade
     image: akka-stock-trading-system/trade-order-service
     ports:
       - '2551:2551'
@@ -26,7 +26,7 @@ services:
 
   node1:
     networks:
-      - cluster-network
+      - cluster-network-trade
     image: akka-stock-trading-system/trade-order-service
     ports:
       - '6001:6000' 
@@ -34,7 +34,7 @@ services:
     environment:
       SERVER_IP: 0.0.0.0
       CLUSTER_IP: node1
-      CLUSTER_PORT: 1500
+      CLUSTER_PORT: 1700
       CLUSTER_SEED_IP: seed
       CLUSTER_SEED_PORT: 2551
       CASSANDRA_IP: 192.168.2.45
@@ -44,7 +44,7 @@ services:
 
   node2:
     networks:
-      - cluster-network
+      - cluster-network-trade
     image: akka-stock-trading-system/trade-order-service
     ports:
       - '6002:6000'
@@ -62,7 +62,7 @@ services:
 
   node3:
     networks:
-      - cluster-network
+      - cluster-network-trade
     image: akka-stock-trading-system/trade-order-service
     ports:
       - '6003:6000'
