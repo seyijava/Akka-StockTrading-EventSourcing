@@ -1,0 +1,246 @@
+{
+	"info": {
+		"_postman_id": "ae35370c-04e0-4aed-a49f-fc1c7058e33e",
+		"name": "StockTradingAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ViewPortfolio",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:9000/view?id=b69118b5-3fe5-4b43-897d-0fc2a521101a",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "9000",
+					"path": [
+						"view"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "b69118b5-3fe5-4b43-897d-0fc2a521101a"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PlaceBuyOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"portfolioId\": \"P-2065408\", \"symbol\":\"YAHOO\", \"numberShare\": 800, \"tradeType\": 2}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:9000/placeBuyOrder",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "9000",
+					"path": [
+						"placeBuyOrder"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PlaceSellOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OpenAccount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"BullTrader\",\"profile\":{\"name\":\"oluwaseyi\",\"surname\":\"otun\"},\"contact\":{\"email\":\"seyijava@gmail.com\",\"phoneNumber\":\"5063238810\"},\"address\":{\"street\":\"70 Gambia Street\",\"postalCode\":\"EIGS57\",\"province\":\"NB\"},\"openBalance\":6000000.00}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:6000/openAccount",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6000",
+					"path": [
+						"openAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DepositFunds",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"accountId\":\"A-4081792\", \"funds\": 65000.00}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:6000/deposit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6000",
+					"path": [
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WithdrawFunds",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAccountBalance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:6000/viewBalance?id=A-2690432",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "6000",
+					"path": [
+						"viewBalance"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "A-2690432"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeAddress",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDetailsRequest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeContatRequest",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTradeOrderStatus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
