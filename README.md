@@ -18,7 +18,7 @@ Akka makes building powerful concurrent & distributed applications simple. Akka 
 # Portfolio Service
  Microservice is responsible for buying and selling and reconstructing our portfolio holdings to determine investor profit and                loss.
 
- ![alt text](https://github.com/seyijava/Akka-StockTrading-EventSourcing/blob/master/images/SequenceSellOrder(1).jpgg)
+ ![alt text](https://github.com/seyijava/Akka-StockTrading-EventSourcing/blob/master/images/SequenceSellOrder.jpg)
  
 # Trade Order Service
    Microservice is responsible for the stock quote and executes trade orders via the exchange e.g NASDAQ
