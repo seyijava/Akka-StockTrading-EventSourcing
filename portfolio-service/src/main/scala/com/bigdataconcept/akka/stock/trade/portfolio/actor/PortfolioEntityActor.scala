@@ -5,7 +5,6 @@ import akka.actor.{ActorLogging, ActorRef, PoisonPill, Props, ReceiveTimeout}
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.Commands.{AcceptRefundCommand, AcknowledgeOrderFailureCommand, ClosePortfolioCommand, CommandFailed, CommandResponse, CompleteTradeCommand, GetPortfolioView, OpenPortfolioCommand, PlaceOrderCommand, ReceiveFundsCommand, SendFundsCommand}
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.Events.{AccountCreditedEvent, AccountDebitedEvent, ClosedEvent, FundsCreditedEvent, FundsDebitedEvent, OpenEvent, OrderCompletedEvent, OrderFailedEvent, OrderFulfilledEvent, OrderPlacedEvent, PortfolioEvent, RefundAcceptedEvent, SharesCreditedEvent, SharesDebitedEvent, SharesPurchaseCreditedEvent, SharesSaleDebitedEvent}
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.View.PortfolioView
-
 import scala.collection.immutable.Seq
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.State.PortfolioState
 import com.bigdataconcept.akka.stock.trade.portfolio.domain.{KafkaProtocol, TradeType}
@@ -43,7 +42,14 @@ class PortfolioEntityActor(tradeOrderEventPublisherActor: ActorRef,accountEventP
 
     case cmd: GetPortfolioView               =>  getPortfolioView(cmd)
 
-    case cmd: PlaceOrderCommand              => placeOrderCommandHandler(cmd) //api to kafka producer
+    case cmd: PlaceOrderCommand              => {
+      placeOrderCommandHandler(cmd) //api to kafka producer
+      if (lastSequenceNr % snapShotInterval == 0 && lastSequenceNr != 0) {
+        saveSnapshot(portfolioState)
+        log.info("Saved Snap Shot Interval")
+      }
+
+      }
 
     case cmd: SendFundsCommand               => sendFundsCommandHandler(cmd)
 
@@ -203,8 +209,7 @@ class PortfolioEntityActor(tradeOrderEventPublisherActor: ActorRef,accountEventP
           publishTradeOrderEvent(payload)
           val cmdResponse = CommandResponse(cmd.portfolioId, String.format("Sell Order has been received will be processed order Id %s ",cmd.orderId))
           sender ! cmdResponse
-          if (lastSequenceNr % snapShotInterval == 0 && lastSequenceNr != 0)
-            saveSnapshot(portfolioState)
+
           }
         }
       }
