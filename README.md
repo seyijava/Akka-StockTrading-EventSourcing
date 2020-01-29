@@ -22,9 +22,9 @@ Portfolio Service
  
 Trade Order Service
    Microservice is responsible for the stock quote and executes trade orders via the exchange e.g NASDAQ
-   
-    ![alt text](https://github.com/seyijava/Akka-StockTrading-EventSourcing/blob/master/images/SequenceAccount.jpg)
-
+  
+  ![alt text](https://github.com/seyijava/Akka-StockTrading-EventSourcing/blob/master/images/SequenceAccount.jpg)
+  
 Account Service
    Microservice is responsible for managing customer accounts like account balance, customer profile.
    
