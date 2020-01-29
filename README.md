@@ -23,6 +23,9 @@ Akka makes building powerful concurrent & distributed applications simple. Akka 
 
 # Account Service
    Microservice is responsible for managing customer accounts like account balance, customer profile.
+   
+   ![alt text](https://github.com/seyijava/Akka-StockTrading-EventSourcing/blob/master/images/SequenceAccount.jpg)
+
 
 
 
