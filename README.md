@@ -30,6 +30,7 @@ Account Service
    
    ![alt text](https://github.com/seyijava/Akka-StockTrading-EventSourcing/blob/master/images/SequenceAccount.jpg)
 
+Build
 
 
 
